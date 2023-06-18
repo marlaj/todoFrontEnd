@@ -18,7 +18,7 @@ This is the front-end repository for the TodoApp project. It provides a user int
 - Adding new tasks
 - Marking tasks as completed
 - Removing tasks completetly from your list
-- Viewing and managing task lists and completed task lists
+- Viewing and managing tasks lists and completed tasks lists
 - Responsive design for mobile and web platforms
 
 ## Technologies Used
