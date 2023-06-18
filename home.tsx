@@ -39,7 +39,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
       email: email,
     };
   
-    fetch('http://${SERVER_IP}/tasks', {
+    fetch(`http://${SERVER_IP}/tasks`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
       email: email,
     };
   
-    fetch('http://${SERVER_IP}/comps', {
+    fetch(`http://${SERVER_IP}/comps`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
         task: task,
       };
   
-      fetch('http://${SERVER_IP}/addtasks', {
+      fetch(`http://${SERVER_IP}/addtasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
     //sends a request to the server to change task status to completed
     
     // Send a request to the server to change the task status to completed
-    fetch('http://${SERVER_IP}/tasks/complete', {
+    fetch(`http://${SERVER_IP}/tasks/complete`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
       taskText: taskText,
     };
     // Send a request to the server to delete the task from the user
-    fetch('http://${SERVER_IP}/deleteTask', {
+    fetch(`http://${SERVER_IP}/deleteTask`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

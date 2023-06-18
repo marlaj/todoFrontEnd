@@ -37,7 +37,7 @@ const RegisterScreen: React.FC = () => {
       password: password,
     };
 
-    fetch('http://${SERVER_IP}/register', {
+    fetch(`http://${SERVER_IP}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
