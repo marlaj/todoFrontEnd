@@ -45,11 +45,3 @@ To get started with the TodoApp frontend, follow these steps:
 Once the development server is running, you can use the Expo Go app on your mobile device to scan the QR code and view the app. Alternatively, you can run the app on an iOS or Android emulator.
 
 Make sure the backend server is also running and properly configured to handle API requests from the front-end.
-
-## Contributing
-
-Contributions to the TodoApp frontend are welcome and encouraged. If you find any issues or have suggestions for improvements, please open an issue or submit a pull request. Make sure to follow the established code style and guidelines.
-
-## License
-
-The TodoApp frontend is open-source and released under the [MIT License](LICENSE).
