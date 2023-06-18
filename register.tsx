@@ -35,7 +35,7 @@ const RegisterScreen: React.FC = () => {
       password: password,
     };
 
-    fetch('http://192.168.1.2:8000/register', {
+    fetch('http://192.168.1.4:8000/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

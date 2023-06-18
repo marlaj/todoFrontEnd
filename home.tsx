@@ -4,6 +4,7 @@ import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpaci
 import Task from './components/task';
 import Comp from './components/comp';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type RootStackParamList = {
@@ -23,19 +24,21 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
   const [task, setTask] = useState('');
   const [taskItems, setTaskItems] = useState<string[]>([]);
   const [compItems, setCompItems] = useState<string[]>([]);
+  
 
   useEffect(() => {
     setEmail(route.params.email);
     console.log(email);
     handleTasks();
-  }, []);
+    handleComps();
+  }, [email]);
 
   const handleTasks = () => {
     const userData = {
       email: email,
     };
   
-    fetch('http://192.168.1.2:8000/tasks', {
+    fetch('http://192.168.1.4:8000/tasks', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -55,11 +58,38 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
         }
       })
       .catch((error) => {
-        console.error('Fetching tasks failed:', error);
+        //
       });
   };
   
+  const handleComps = () => {
+    const userData = {
+      email: email,
+    };
   
+    fetch('http://192.168.1.4:8000/comps', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Request failed');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.tasks) {
+          setCompItems(data.tasks);
+          console.log('Tasks retrieved successfully:', data.tasks);
+        }
+      })
+      .catch((error) => {
+        //
+      });
+  };
 
   const handleAddTask = () => {
     if (task.trim()) {
@@ -71,7 +101,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
         task: task,
       };
   
-      fetch('http://192.168.1.2:8000/addtasks', {
+      fetch('http://192.168.1.4:8000/addtasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,15 +128,45 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
     // Update the state with the modified taskItems and the completed task
     setTaskItems(itemsCopy);
     setCompItems([...compItems, taskText]);
+
+    const compData = {
+      email: email,
+      taskText: taskText,
+    };
+    
+    //sends a request to the server to change task status to completed
+    
+    // Send a request to the server to change the task status to completed
+    fetch('http://192.168.1.4:8000/tasks/complete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(compData),
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+      console.log('Task completed successfully');
+    })
+    .catch((error) => {
+      console.error('Completing task failed', error);
+    });
+  };
   
+
+  const deleteTask = (index: number, taskText: string) => {
+    const compCopy = [...compItems];
+    compCopy.splice(index, 1);
+    setCompItems(compCopy);
     // Create a payload object containing the task information
     const taskData = {
       email: email,
       taskText: taskText,
     };
-  
     // Send a request to the server to delete the task from the user
-    fetch('http://192.168.1.2:8000/deleteTask', {
+    fetch('http://192.168.1.4:8000/deleteTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -123,15 +183,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
         console.error('Deleting task failed', error);
       });
   };
-  
 
-  const deleteTask = (index: number) => {
-    const compCopy = [...compItems];
-    compCopy.splice(index, 1);
-    setCompItems(compCopy);
-  };
+  
   const navigation = useNavigation();
-  const LogOut = () => {
+  const LogOut = async () => {
+    await AsyncStorage.removeItem('isLoggedIn');
+    await AsyncStorage.removeItem('email');
     navigation.navigate('Login');
   };
 
@@ -173,7 +230,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
             {
                 compItems.map((item,index) => {
                     return(
-                        <TouchableOpacity key={index} onPress={() => deleteTask(index)}>
+                        <TouchableOpacity key={index} onPress={() => deleteTask(index,item)}>
                             <Comp text={item} /> 
                         </TouchableOpacity>
                     )

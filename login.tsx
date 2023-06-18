@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-let userInfo = {}
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+let userInfo = {};
+
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
+
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+
+  const checkIfLoggedIn = async () => {
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      const storedEmail = await AsyncStorage.getItem('email');
+      userInfo = { email: storedEmail };
+      navigation.navigate('Home', { email: storedEmail });
+    }
+  };
 
   const handleLogin = () => {
     if (!email || !password) {
@@ -20,7 +36,7 @@ const LoginScreen: React.FC = () => {
       password: password,
     };
 
-    fetch('http://192.168.1.2:8000/login', {
+    fetch('http://192.168.1.4:8000/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,14 +45,13 @@ const LoginScreen: React.FC = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        if(data.message == 'Invalid Email or Password'){
+        if (data.message === 'Invalid Email or Password') {
           setErrorMessage(data.message);
-        }
-        else{
-          userInfo = data.user.email;
-          console.log(data.user);
-          navigation.navigate('Home', { email: userInfo });
-
+        } else {
+          userInfo = { email: data.user.email };
+          AsyncStorage.setItem('isLoggedIn', 'true');
+          AsyncStorage.setItem('email', data.user.email);
+          navigation.navigate('Home', { email: data.user.email });
         }
       })
       .catch((error) => {
@@ -52,16 +67,10 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
       <Text style={styles.heading}>Login</Text>
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-      />
+      <TextInput style={styles.input} placeholder="Email" value={email} onChangeText={setEmail} />
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -71,7 +80,7 @@ const LoginScreen: React.FC = () => {
       />
       <Button title="Login" onPress={handleLogin} />
       <Button title="Go to Register" onPress={goToRegister} />
-      </KeyboardAvoidingView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -81,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#C4E0E5'
+    backgroundColor: '#C4E0E5',
   },
   heading: {
     fontSize: 24,
@@ -89,6 +98,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
+    
     width: '100%',
     height: 40,
     borderColor: 'gray',
