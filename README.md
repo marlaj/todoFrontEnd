@@ -35,9 +35,16 @@ To get started with the TodoApp frontend, follow these steps:
 
 1. Clone this repository to your local machine.
 2. Install Node.js (if not already installed).
-3. Install Expo CLI globally by running `npm install -g expo-cli`.
-4. Install project dependencies by running `npm install`.
-5. Start the development server by running `npm start`.
+3. Update the IP address in the following files:
+
+      - `register.tsx`
+      - `login.tsx`
+      - `home.tsx`
+
+    In each of these files, locate the line where the `SERVER_IP` constant is defined and replace `'192.168.1.4:8000'` with the IP address of your server.
+4. Install Expo CLI globally by running `npm install -g expo-cli`.
+5. Install project dependencies by running `npm install`.
+6. Start the development server by running `npm start`.
 
 ## Usage
 
