@@ -37,8 +37,7 @@ To get started with the TodoApp frontend, follow these steps:
 2. Install Node.js (if not already installed).
 3. Install Expo CLI globally by running `npm install -g expo-cli`.
 4. Install project dependencies by running `npm install`.
-5. Create a `.env` file based on the provided `.env.example` file and configure the necessary environment variables.
-6. Start the development server by running `npm start`.
+5. Start the development server by running `npm start`.
 
 ## Usage
 
