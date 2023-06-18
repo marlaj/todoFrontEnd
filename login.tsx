@@ -4,6 +4,7 @@ import { RouteProp, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let userInfo = {};
+const SERVER_IP = '192.168.1.4:8000';
 
 const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ const LoginScreen: React.FC = () => {
       password: password,
     };
 
-    fetch('http://192.168.1.4:8000/login', {
+    fetch('http://${SERVER_IP}/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

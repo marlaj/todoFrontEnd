@@ -9,6 +9,8 @@ const RegisterScreen: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
+  const SERVER_IP = '192.168.1.4:8000';
+
 
   const handleRegister = () => {
     if (!name || !email || !password || !confirmPassword) {
@@ -35,7 +37,7 @@ const RegisterScreen: React.FC = () => {
       password: password,
     };
 
-    fetch('http://192.168.1.4:8000/register', {
+    fetch('http://${SERVER_IP}/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

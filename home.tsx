@@ -6,6 +6,7 @@ import Comp from './components/comp';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const SERVER_IP = '192.168.1.4:8000';
 
 type RootStackParamList = {
   Home: { email: string };
@@ -38,7 +39,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
       email: email,
     };
   
-    fetch('http://192.168.1.4:8000/tasks', {
+    fetch('http://${SERVER_IP}/tasks', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -67,7 +68,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
       email: email,
     };
   
-    fetch('http://192.168.1.4:8000/comps', {
+    fetch('http://${SERVER_IP}/comps', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -101,7 +102,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
         task: task,
       };
   
-      fetch('http://192.168.1.4:8000/addtasks', {
+      fetch('http://${SERVER_IP}/addtasks', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
     //sends a request to the server to change task status to completed
     
     // Send a request to the server to change the task status to completed
-    fetch('http://192.168.1.4:8000/tasks/complete', {
+    fetch('http://${SERVER_IP}/tasks/complete', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -166,7 +167,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ route }) => {
       taskText: taskText,
     };
     // Send a request to the server to delete the task from the user
-    fetch('http://192.168.1.4:8000/deleteTask', {
+    fetch('http://${SERVER_IP}/deleteTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
